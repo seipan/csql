@@ -37,5 +37,7 @@ func (c *CsvFile) SetContent() error {
 }
 
 func (c *CsvFile) GetTableSchema() {
-
+	for i, v := range c.content[0] {
+		c.tableSchema[v] = c.content[1][i]
+	}
 }
