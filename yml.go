@@ -1,36 +1,26 @@
 package csql
 
 import (
-	"fmt"
+	"os"
 
-	"github.com/goccy/go-yaml/ast"
-
-	goyaml "github.com/goccy/go-yaml"
+	"gopkg.in/yaml.v2"
 )
+
+type Yml struct {
+	dns string `yaml:"dns"`
+}
 
 type YmlFile struct {
 	path string
-	file *ast.File
 }
 
 func (y *YmlFile) ReadYmlFile() (any, error) {
-	if y.path == "" {
-		return nil, fmt.Errorf("path is empty")
-	}
-	yamlPath, err := goyaml.PathString(y.path)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse path %s: %w", y.path, err)
-	}
-
-	node, err := yamlPath.FilterFile(y.file)
+	yml := Yml{}
+	b, err := os.ReadFile(y.path)
 	if err != nil {
 		return nil, err
 	}
 
-	var value interface{}
-	if err := goyaml.Unmarshal([]byte(node.String()), &value); err != nil {
-		return nil, err
-	}
-
-	return value, nil
+	yaml.Unmarshal(b, &yml)
+	return yml, nil
 }
