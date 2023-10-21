@@ -23,31 +23,47 @@
 package mariadb
 
 import (
-	"fmt"
-	"strings"
+	"testing"
 
 	"github.com/seipan/csql/lib"
+	"github.com/stretchr/testify/assert"
 )
 
-type MariaDBSQLInserter struct {
-	keys      []lib.KeyValue
-	tableName string
-}
-
-func (i *MariaDBSQLInserter) Query() string {
-	placeholders := make([]string, 0, len(i.keys))
-	keys := make([]string, 0, len(i.keys))
-
-	for _, kv := range i.keys {
-		keys = append(keys, kv.Key)
-		placeholders = append(placeholders, "?")
+func TestMariaDBSQLInserter_Query(t *testing.T) {
+	tests := []struct {
+		name      string
+		keys      []lib.KeyValue
+		tableName string
+		expected  string
+	}{
+		{
+			name: "single key-value pair",
+			keys: []lib.KeyValue{
+				{Key: "name", Value: "John"},
+			},
+			tableName: "users",
+			expected:  "INSERT INTO users (name) VALUES (?)",
+		},
+		{
+			name: "multiple key-value pairs",
+			keys: []lib.KeyValue{
+				{Key: "name", Value: "John"},
+				{Key: "age", Value: "30"},
+			},
+			tableName: "users",
+			expected:  "INSERT INTO users (name, age) VALUES (?, ?)",
+		},
 	}
 
-	query := fmt.Sprintf(
-		"INSERT INTO %s (%s) VALUES (%s)",
-		i.tableName,
-		strings.Join(keys, ", "),
-		strings.Join(placeholders, ", "),
-	)
-	return query
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			inserter := &MariaDBSQLInserter{
+				keys:      tt.keys,
+				tableName: tt.tableName,
+			}
+
+			result := inserter.Query()
+			assert.Equal(t, tt.expected, result)
+		})
+	}
 }

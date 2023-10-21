@@ -21,3 +21,33 @@
 // SOFTWARE.
 
 package mysql
+
+import (
+	"fmt"
+	"strings"
+
+	"github.com/seipan/csql/lib"
+)
+
+type MySQLInserter struct {
+	keys      []lib.KeyValue
+	tableName string
+}
+
+func (i *MySQLInserter) Query() string {
+	placeholders := make([]string, 0, len(i.keys))
+	keys := make([]string, 0, len(i.keys))
+
+	for _, kv := range i.keys {
+		keys = append(keys, kv.Key)
+		placeholders = append(placeholders, "?")
+	}
+
+	query := fmt.Sprintf(
+		"INSERT INTO %s (%s) VALUES (%s)",
+		i.tableName,
+		strings.Join(keys, ", "),
+		strings.Join(placeholders, ", "),
+	)
+	return query
+}

@@ -21,3 +21,33 @@
 // SOFTWARE.
 
 package postgresql
+
+import (
+	"fmt"
+	"strings"
+
+	"github.com/seipan/csql/lib"
+)
+
+type PostgresSQLInserter struct {
+	keys      []lib.KeyValue
+	tableName string
+}
+
+func (i *PostgresSQLInserter) Query() string {
+	placeholders := make([]string, 0, len(i.keys))
+	keys := make([]string, 0, len(i.keys))
+
+	for idx, kv := range i.keys {
+		keys = append(keys, kv.Key)
+		placeholders = append(placeholders, fmt.Sprintf("$%d", idx+1))
+	}
+
+	query := fmt.Sprintf(
+		"INSERT INTO %s (%s) VALUES (%s)",
+		i.tableName,
+		strings.Join(keys, ", "),
+		strings.Join(placeholders, ", "),
+	)
+	return query
+}

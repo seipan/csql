@@ -20,34 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package mariadb
+package lib
 
-import (
-	"fmt"
-	"strings"
-
-	"github.com/seipan/csql/lib"
-)
-
-type MariaDBSQLInserter struct {
-	keys      []lib.KeyValue
-	tableName string
+type KeyValue struct {
+	Key   string
+	Value string
 }
 
-func (i *MariaDBSQLInserter) Query() string {
-	placeholders := make([]string, 0, len(i.keys))
-	keys := make([]string, 0, len(i.keys))
-
-	for _, kv := range i.keys {
-		keys = append(keys, kv.Key)
-		placeholders = append(placeholders, "?")
-	}
-
-	query := fmt.Sprintf(
-		"INSERT INTO %s (%s) VALUES (%s)",
-		i.tableName,
-		strings.Join(keys, ", "),
-		strings.Join(placeholders, ", "),
-	)
-	return query
+type Inserter interface {
+	Query() string
 }
