@@ -10,7 +10,7 @@
 
 # csql
 
-⭐ Implementing a Load Balancer in Golang(just a toy)  ⭐
+⭐ CLI tool to insert CSV data into a specified database  ⭐
 
 <br>
 <br>
