@@ -1,1 +1,19 @@
+<div align="center">
+
+![Last commit](https://img.shields.io/github/last-commit/seipan/csql?style=flat-square)
+![Repository Stars](https://img.shields.io/github/stars/seipan/csql?style=flat-square)
+![Issues](https://img.shields.io/github/issues/seipan/csql?style=flat-square)
+![Open Issues](https://img.shields.io/github/issues-raw/seipan/csql?style=flat-square)
+[![go](https://github.com/seipan/csql/actions/workflows/go.yml/badge.svg)](https://github.com/seipan/csql/actions/workflows/go.yml)
+
+<img src="./logo/csqllogo.png" alt="eyecatch" height="200">
+
 # csql
+
+⭐ Implementing a Load Balancer in Golang(just a toy)  ⭐
+
+<br>
+<br>
+
+
+</div>
