@@ -29,4 +29,5 @@ type KeyValue struct {
 
 type Inserter interface {
 	Query() string
+	Insert() error
 }

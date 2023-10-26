@@ -23,6 +23,7 @@
 package sqlite
 
 import (
+	"database/sql"
 	"fmt"
 	"strings"
 
@@ -32,6 +33,7 @@ import (
 type SQLiteInserter struct {
 	keys      []lib.KeyValue
 	tableName string
+	db        *sql.DB
 }
 
 func (i *SQLiteInserter) Query() string {
@@ -50,4 +52,31 @@ func (i *SQLiteInserter) Query() string {
 		strings.Join(placeholders, ", "),
 	)
 	return query
+}
+
+func (i *SQLiteInserter) Insert() error {
+	stmt, err := i.db.Prepare(i.Query())
+	if err != nil {
+		return fmt.Errorf("failed to prepare statement: %w", err)
+	}
+	defer stmt.Close()
+
+	values := make([]interface{}, 0, len(i.keys))
+	for _, kv := range i.keys {
+		values = append(values, kv.Value)
+	}
+
+	_, err = stmt.Exec(values...)
+	if err != nil {
+		return fmt.Errorf("failed to execute statement: %w", err)
+	}
+
+	return nil
+}
+
+func NewSQLiteInserter(tableName string, db *sql.DB) lib.Inserter {
+	return &SQLiteInserter{
+		tableName: tableName,
+		db:        db,
+	}
 }

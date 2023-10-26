@@ -23,6 +23,7 @@
 package mariadb
 
 import (
+	"database/sql"
 	"fmt"
 	"strings"
 
@@ -32,6 +33,7 @@ import (
 type MariaDBSQLInserter struct {
 	keys      []lib.KeyValue
 	tableName string
+	db        *sql.DB
 }
 
 func (i *MariaDBSQLInserter) Query() string {
@@ -50,4 +52,31 @@ func (i *MariaDBSQLInserter) Query() string {
 		strings.Join(placeholders, ", "),
 	)
 	return query
+}
+
+func (i *MariaDBSQLInserter) Insert() error {
+	stmt, err := i.db.Prepare(i.Query())
+	if err != nil {
+		return fmt.Errorf("failed to prepare statement: %w", err)
+	}
+	defer stmt.Close()
+
+	values := make([]interface{}, 0, len(i.keys))
+	for _, kv := range i.keys {
+		values = append(values, kv.Value)
+	}
+
+	_, err = stmt.Exec(values...)
+	if err != nil {
+		return fmt.Errorf("failed to execute statement: %w", err)
+	}
+
+	return nil
+}
+
+func NewMariaDBSQLInserter(tableName string, db *sql.DB) lib.Inserter {
+	return &MariaDBSQLInserter{
+		tableName: tableName,
+		db:        db,
+	}
 }
