@@ -43,12 +43,16 @@ func Exec(config Config) error {
 	return nil
 }
 
-func newSQLInserter(dbtype string) (query.Inserter, error) {
+func newSQLInserter(dbtype string, tablename string, db *sql.DB) (query.Inserter, error) {
 	switch dbtype {
 	case "mysql":
-		return &mysql.MySQLInserter{}, nil
+		return mysql.NewMySQLInserter(tablename, db), nil
 	case "sqlite":
-		return &sqlite.SQLiteInserter{}, nil
+		return sqlite.NewSQLiteInserter(tablename, db), nil
+	case "postgresql":
+		return postgresql.NewPostgresSQLInserter(tablename, db), nil
+	case "mariadb":
+		return mariadb.NewMariaDBInserter(tablename, db), nil
 	default:
 		return nil, fmt.Errorf("invalid dbtype: %s", dbtype)
 	}
