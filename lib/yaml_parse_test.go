@@ -38,7 +38,7 @@ func TestParseYML(t *testing.T) {
 			filepath: "../testdata/yaml/.csql.yaml",
 			expected: &Config{
 				Type:     "mysql",
-				DNS:      "hogehoge",
+				DSN:      "hogehoge",
 				Filepath: "./test.csv",
 			},
 			err: nil,

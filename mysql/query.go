@@ -27,11 +27,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/seipan/csql/lib"
+	"github.com/seipan/csql/query"
 )
 
 type MySQLInserter struct {
-	keys      []lib.KeyValue
+	keys      []query.KeyValue
 	tableName string
 	db        *sql.DB
 }
@@ -73,7 +73,7 @@ func (i *MySQLInserter) Insert() error {
 	return nil
 }
 
-func NewMySQLInserter(tableName string, db *sql.DB) lib.Inserter {
+func NewMySQLInserter(tableName string, db *sql.DB) query.Inserter {
 	return &MySQLInserter{
 		tableName: tableName,
 		db:        db,

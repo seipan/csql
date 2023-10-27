@@ -24,6 +24,6 @@ package lib
 
 type Config struct {
 	Type     string `yaml:"type"`
-	DNS      string `yaml:"dns"`
+	DSN      string `yaml:"dsn"`
 	Filepath string `yaml:"filepath"`
 }

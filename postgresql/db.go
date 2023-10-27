@@ -20,14 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package lib
+package postgresql
 
-type KeyValue struct {
-	Key   string
-	Value string
-}
+import (
+	"database/sql"
 
-type Inserter interface {
-	Query() string
-	Insert() error
+	_ "github.com/lib/pq"
+)
+
+func NewDB(dsn string) (*sql.DB, error) {
+	return sql.Open("postgres", dsn)
 }

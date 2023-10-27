@@ -27,11 +27,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/seipan/csql/lib"
+	"github.com/seipan/csql/query"
 )
 
 type PostgresSQLInserter struct {
-	keys      []lib.KeyValue
+	keys      []query.KeyValue
 	tableName string
 	db        *sql.DB
 }
@@ -74,7 +74,7 @@ func (i *PostgresSQLInserter) Insert() error {
 	return nil
 }
 
-func NewPostgresSQLInserter(tableName string, db *sql.DB) lib.Inserter {
+func NewPostgresSQLInserter(tableName string, db *sql.DB) query.Inserter {
 	return &PostgresSQLInserter{
 		tableName: tableName,
 		db:        db,

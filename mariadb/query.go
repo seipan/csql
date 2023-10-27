@@ -27,11 +27,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/seipan/csql/lib"
+	"github.com/seipan/csql/query"
 )
 
 type MariaDBSQLInserter struct {
-	keys      []lib.KeyValue
+	keys      []query.KeyValue
 	tableName string
 	db        *sql.DB
 }
@@ -74,7 +74,7 @@ func (i *MariaDBSQLInserter) Insert() error {
 	return nil
 }
 
-func NewMariaDBSQLInserter(tableName string, db *sql.DB) lib.Inserter {
+func NewMariaDBSQLInserter(tableName string, db *sql.DB) query.Inserter {
 	return &MariaDBSQLInserter{
 		tableName: tableName,
 		db:        db,

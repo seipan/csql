@@ -21,3 +21,50 @@
 // SOFTWARE.
 
 package lib
+
+import (
+	"database/sql"
+	"fmt"
+
+	"github.com/seipan/csql/mariadb"
+	"github.com/seipan/csql/mysql"
+	"github.com/seipan/csql/postgresql"
+	"github.com/seipan/csql/query"
+	"github.com/seipan/csql/sqlite"
+)
+
+func Exec(config Config) error {
+	db, err := newSQLDB(config)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	return nil
+}
+
+func newSQLInserter(dbtype string) (query.Inserter, error) {
+	switch dbtype {
+	case "mysql":
+		return &mysql.MySQLInserter{}, nil
+	case "sqlite":
+		return &sqlite.SQLiteInserter{}, nil
+	default:
+		return nil, fmt.Errorf("invalid dbtype: %s", dbtype)
+	}
+}
+
+func newSQLDB(config Config) (*sql.DB, error) {
+	switch config.Type {
+	case "mysql":
+		return mysql.NewDB(config.DSN)
+	case "sqlite":
+		return sqlite.NewDB(config.DSN)
+	case "postgresql":
+		return postgresql.NewDB(config.DSN)
+	case "mariadb":
+		return mariadb.NewDB(config.DSN)
+	default:
+		return nil, fmt.Errorf("invalid dbtype: %s", config.Type)
+	}
+}

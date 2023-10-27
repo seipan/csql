@@ -20,63 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package sqlite
+package mariadb
 
 import (
 	"database/sql"
-	"fmt"
-	"strings"
 
-	"github.com/seipan/csql/query"
+	_ "github.com/go-sql-driver/mysql"
 )
 
-type SQLiteInserter struct {
-	keys      []query.KeyValue
-	tableName string
-	db        *sql.DB
-}
-
-func (i *SQLiteInserter) Query() string {
-	placeholders := make([]string, 0, len(i.keys))
-	keys := make([]string, 0, len(i.keys))
-
-	for _, kv := range i.keys {
-		keys = append(keys, kv.Key)
-		placeholders = append(placeholders, "?")
-	}
-
-	query := fmt.Sprintf(
-		"INSERT INTO %s (%s) VALUES (%s)",
-		i.tableName,
-		strings.Join(keys, ", "),
-		strings.Join(placeholders, ", "),
-	)
-	return query
-}
-
-func (i *SQLiteInserter) Insert() error {
-	stmt, err := i.db.Prepare(i.Query())
-	if err != nil {
-		return fmt.Errorf("failed to prepare statement: %w", err)
-	}
-	defer stmt.Close()
-
-	values := make([]interface{}, 0, len(i.keys))
-	for _, kv := range i.keys {
-		values = append(values, kv.Value)
-	}
-
-	_, err = stmt.Exec(values...)
-	if err != nil {
-		return fmt.Errorf("failed to execute statement: %w", err)
-	}
-
-	return nil
-}
-
-func NewSQLiteInserter(tableName string, db *sql.DB) query.Inserter {
-	return &SQLiteInserter{
-		tableName: tableName,
-		db:        db,
-	}
+func NewDB(dsn string) (*sql.DB, error) {
+	return sql.Open("mysql", dsn)
 }

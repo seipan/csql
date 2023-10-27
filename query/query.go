@@ -20,49 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package postgresql
+package query
 
-import (
-	"testing"
+type KeyValue struct {
+	Key   string
+	Value string
+}
 
-	"github.com/seipan/csql/query"
-	"github.com/stretchr/testify/assert"
-)
-
-func TestPostgresSQLInserter_Query(t *testing.T) {
-	tests := []struct {
-		name      string
-		keys      []query.KeyValue
-		tableName string
-		expected  string
-	}{
-		{
-			name: "single key-value pair",
-			keys: []query.KeyValue{
-				{Key: "name", Value: "John"},
-			},
-			tableName: "users",
-			expected:  "INSERT INTO users (name) VALUES ($1)",
-		},
-		{
-			name: "multiple key-value pairs",
-			keys: []query.KeyValue{
-				{Key: "name", Value: "John"},
-				{Key: "age", Value: "30"},
-			},
-			tableName: "users",
-			expected:  "INSERT INTO users (name, age) VALUES ($1, $2)",
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			inserter := &PostgresSQLInserter{
-				keys:      tt.keys,
-				tableName: tt.tableName,
-			}
-
-			assert.Equal(t, tt.expected, inserter.Query())
-		})
-	}
+type Inserter interface {
+	Query() string
+	Insert() error
 }

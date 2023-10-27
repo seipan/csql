@@ -25,20 +25,20 @@ package sqlite
 import (
 	"testing"
 
-	"github.com/seipan/csql/lib"
+	"github.com/seipan/csql/query"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestSQLiteInserter_Query(t *testing.T) {
 	tests := []struct {
 		name      string
-		keys      []lib.KeyValue
+		keys      []query.KeyValue
 		tableName string
 		expected  string
 	}{
 		{
 			name: "single key-value pair",
-			keys: []lib.KeyValue{
+			keys: []query.KeyValue{
 				{Key: "name", Value: "John"},
 			},
 			tableName: "users",
@@ -46,7 +46,7 @@ func TestSQLiteInserter_Query(t *testing.T) {
 		},
 		{
 			name: "multiple key-value pairs",
-			keys: []lib.KeyValue{
+			keys: []query.KeyValue{
 				{Key: "name", Value: "John"},
 				{Key: "age", Value: "30"},
 			},
