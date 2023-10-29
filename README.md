@@ -10,7 +10,7 @@
 
 # csql
 
-⭐ CLI tool to insert CSV data into a specified database  ⭐
+⭐ CLI tool to insert CSV data into a specified database.  ⭐
 
 <br>
 <br>
