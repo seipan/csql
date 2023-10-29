@@ -74,7 +74,7 @@ func (i *MariaDBSQLInserter) Insert() error {
 	return nil
 }
 
-func NewMariaDBSQLInserter(tableName string, db *sql.DB) query.Inserter {
+func NewMariaDBInserter(tableName string, db *sql.DB) query.Inserter {
 	return &MariaDBSQLInserter{
 		tableName: tableName,
 		db:        db,
