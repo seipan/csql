@@ -23,11 +23,66 @@
 package lib
 
 import (
+	"database/sql"
 	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+func TestNewSQLInserter(t *testing.T) {
+	db := &sql.DB{}
+	tests := []struct {
+		name      string
+		dbtype    string
+		tablename string
+		wantErr   bool
+	}{
+		{
+			name:      "mysql inserter",
+			dbtype:    "mysql",
+			tablename: "testTable",
+			wantErr:   false,
+		},
+		{
+			name:      "sqlite inserter",
+			dbtype:    "sqlite",
+			tablename: "testTable",
+			wantErr:   false,
+		},
+		{
+			name:      "postgresql inserter",
+			dbtype:    "postgresql",
+			tablename: "testTable",
+			wantErr:   false,
+		},
+		{
+			name:      "mariadb inserter",
+			dbtype:    "mariadb",
+			tablename: "testTable",
+			wantErr:   false,
+		},
+		{
+			name:      "invalid dbtype",
+			dbtype:    "invalid",
+			tablename: "testTable",
+			wantErr:   true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			inserter, err := newSQLInserter(tt.dbtype, tt.tablename, db)
+			if tt.wantErr {
+				assert.Error(t, err)
+				assert.Nil(t, inserter)
+			} else {
+				assert.NoError(t, err)
+				assert.NotNil(t, inserter)
+			}
+		})
+	}
+}
 
 func TestNewSQLDB(t *testing.T) {
 	tests := []struct {
