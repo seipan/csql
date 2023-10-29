@@ -64,6 +64,10 @@ func (c *CsvFile) GetTableSchema() {
 	}
 }
 
+func (c *CsvFile) GetTableName() string {
+	return c.content[0][0]
+}
+
 func (c *CsvFile) GetTableSchemaMap() map[string]string {
 	return c.tableSchema
 }
