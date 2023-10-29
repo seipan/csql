@@ -63,3 +63,95 @@ func (c *CsvFile) GetTableSchema() {
 		c.tableSchema[v] = c.content[1][i]
 	}
 }
+
+func (c *CsvFile) GetTableSchemaMap() map[string]string {
+	return c.tableSchema
+}
+
+func (c *CsvFile) CheckCsvFormat() error {
+	if err := c.checkTableNames(); err != nil {
+		return err
+	}
+	if err := c.checkLength(); err != nil {
+		return err
+	}
+	if err := c.checkTableSchema(); err != nil {
+		return err
+	}
+	if err := c.checkTableValue(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *CsvFile) checkTableValue() error {
+	if c.content == nil {
+		return fmt.Errorf("csv file content is nil")
+	}
+	for i, v := range c.content {
+		if i == 0 {
+			continue
+		}
+		for j, vv := range v {
+			if j == 0 {
+				continue
+			}
+			if vv == "" && c.content[0][j] != "" {
+				return fmt.Errorf("table value is empty at %d %d", i, j)
+			}
+		}
+	}
+	return nil
+}
+
+func (c *CsvFile) checkTableSchema() error {
+	if c.content == nil {
+		return fmt.Errorf("csv file content is nil")
+	}
+	for i, v := range c.content[0] {
+		if i == 0 {
+			continue
+		}
+		if v == "" && c.content[1][i] != "" {
+			return fmt.Errorf("table schema is empty at %d", i)
+		}
+	}
+	return nil
+}
+
+func (c *CsvFile) checkTableNames() error {
+	if c.content == nil {
+		return fmt.Errorf("csv file content is nil")
+	}
+	if c.content[0][0] == "" {
+		return fmt.Errorf("table name is empty")
+	}
+	return nil
+}
+
+func (c *CsvFile) checkLength() error {
+	if c.content == nil {
+		return fmt.Errorf("csv file content is nil")
+	}
+	for i, v := range c.content {
+		if i == 0 {
+			continue
+		}
+		if len(v) != len(c.content[0]) {
+			return fmt.Errorf("table length is not equal at %d", i)
+		}
+	}
+	return nil
+}
+
+func NewCsvFile(path string) (*CsvFile, error) {
+	c := &CsvFile{
+		path:        path,
+		tableSchema: make(map[string]string),
+	}
+	if err := c.SetContent(); err != nil {
+		return nil, err
+	}
+	c.GetTableSchema()
+	return c, nil
+}

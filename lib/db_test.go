@@ -21,3 +21,63 @@
 // SOFTWARE.
 
 package lib
+
+import (
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestNewSQLDB(t *testing.T) {
+	tests := []struct {
+		name     string
+		config   Config
+		wantErr  bool
+		expected string
+	}{
+		{
+			name:     "mysql db",
+			config:   Config{Type: "mysql"},
+			wantErr:  false,
+			expected: "*sql.DB",
+		},
+		{
+			name:     "sqlite db",
+			config:   Config{Type: "sqlite"},
+			wantErr:  false,
+			expected: "*sql.DB",
+		},
+		{
+			name:     "postgresql db",
+			config:   Config{Type: "postgresql"},
+			wantErr:  false,
+			expected: "*sql.DB",
+		},
+		{
+			name:     "mariadb db",
+			config:   Config{Type: "mariadb"},
+			wantErr:  false,
+			expected: "*sql.DB",
+		},
+		{
+			name:    "invalid db",
+			config:  Config{Type: "invalid"},
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			db, err := newSQLDB(tt.config)
+			if tt.wantErr {
+				assert.Error(t, err)
+				assert.Nil(t, db)
+			} else {
+				assert.NoError(t, err)
+				assert.NotNil(t, db)
+				assert.Equal(t, tt.expected, fmt.Sprintf("%T", db))
+			}
+		})
+	}
+}

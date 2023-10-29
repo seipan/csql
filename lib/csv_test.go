@@ -21,3 +21,17 @@
 // SOFTWARE.
 
 package lib
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestReadCsvFile(t *testing.T) {
+	csv := CsvFile{path: "../testdata/csv/test01.csv"}
+	res, err := csv.ReadCsvFile()
+	assert.NoError(t, err)
+	assert.Equal(t, "user", res[0][0])
+	assert.Equal(t, [][]string{{"user", "name", "id", "email"}, {"", "tarou", "12", "hoge@example.com"}, {"", "hanako", "13", "huga@example.com"}}, res)
+}
