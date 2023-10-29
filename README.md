@@ -18,3 +18,8 @@
 
 
 </div>
+
+## Install
+```
+go install github.com/seipan/csql@latest
+```
