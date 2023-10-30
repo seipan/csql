@@ -26,6 +26,8 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+
+	"github.com/seipan/csql/query"
 )
 
 type CsvFile struct {
@@ -70,6 +72,10 @@ func (c *CsvFile) GetTableName() string {
 
 func (c *CsvFile) GetTableSchemaMap() map[string]string {
 	return c.tableSchema
+}
+
+func (c *CsvFile) GetKeyValues() []query.KeyValues {
+	return nil
 }
 
 func (c *CsvFile) CheckCsvFormat() error {

@@ -45,7 +45,9 @@ func InsertExec(config Config) error {
 		return err
 	}
 
-	insert, err := newSQLInserter(config.Type, csv.GetTableName(), db)
+	kv := csv.GetKeyValues()
+
+	insert, err := newSQLInserter(config.Type, kv[0], csv.GetTableName(), db)
 	if err != nil {
 		return err
 	}
@@ -56,16 +58,16 @@ func InsertExec(config Config) error {
 	return nil
 }
 
-func newSQLInserter(dbtype string, tablename string, db *sql.DB) (query.Inserter, error) {
+func newSQLInserter(dbtype string, kv query.KeyValues, tablename string, db *sql.DB) (query.Inserter, error) {
 	switch dbtype {
 	case "mysql":
-		return mysql.NewMySQLInserter(tablename, db), nil
+		return mysql.NewMySQLInserter(kv, tablename, db), nil
 	case "sqlite":
-		return sqlite.NewSQLiteInserter(tablename, db), nil
+		return sqlite.NewSQLiteInserter(kv, tablename, db), nil
 	case "postgresql":
-		return postgresql.NewPostgresSQLInserter(tablename, db), nil
+		return postgresql.NewPostgresSQLInserter(kv, tablename, db), nil
 	case "mariadb":
-		return mariadb.NewMariaDBInserter(tablename, db), nil
+		return mariadb.NewMariaDBInserter(kv, tablename, db), nil
 	default:
 		return nil, fmt.Errorf("invalid dbtype: %s", dbtype)
 	}

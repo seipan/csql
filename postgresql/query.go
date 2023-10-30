@@ -31,7 +31,7 @@ import (
 )
 
 type PostgresSQLInserter struct {
-	keys      []query.KeyValue
+	keys      query.KeyValues
 	tableName string
 	db        *sql.DB
 }
@@ -74,8 +74,9 @@ func (i *PostgresSQLInserter) Insert() error {
 	return nil
 }
 
-func NewPostgresSQLInserter(tableName string, db *sql.DB) query.Inserter {
+func NewPostgresSQLInserter(kv query.KeyValues, tableName string, db *sql.DB) query.Inserter {
 	return &PostgresSQLInserter{
+		keys:      kv,
 		tableName: tableName,
 		db:        db,
 	}

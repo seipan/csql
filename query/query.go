@@ -27,6 +27,8 @@ type KeyValue struct {
 	Value string
 }
 
+type KeyValues []KeyValue
+
 type Inserter interface {
 	Query() string
 	Insert() error

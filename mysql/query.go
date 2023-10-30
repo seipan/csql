@@ -31,7 +31,7 @@ import (
 )
 
 type MySQLInserter struct {
-	keys      []query.KeyValue
+	keys      query.KeyValues
 	tableName string
 	db        *sql.DB
 }
@@ -73,8 +73,9 @@ func (i *MySQLInserter) Insert() error {
 	return nil
 }
 
-func NewMySQLInserter(tableName string, db *sql.DB) query.Inserter {
+func NewMySQLInserter(kv query.KeyValues, tableName string, db *sql.DB) query.Inserter {
 	return &MySQLInserter{
+		keys:      kv,
 		tableName: tableName,
 		db:        db,
 	}

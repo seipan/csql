@@ -31,7 +31,7 @@ import (
 )
 
 type MariaDBSQLInserter struct {
-	keys      []query.KeyValue
+	keys      query.KeyValues
 	tableName string
 	db        *sql.DB
 }
@@ -74,8 +74,9 @@ func (i *MariaDBSQLInserter) Insert() error {
 	return nil
 }
 
-func NewMariaDBInserter(tableName string, db *sql.DB) query.Inserter {
+func NewMariaDBInserter(kv query.KeyValues, tableName string, db *sql.DB) query.Inserter {
 	return &MariaDBSQLInserter{
+		keys:      kv,
 		tableName: tableName,
 		db:        db,
 	}

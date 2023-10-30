@@ -31,7 +31,7 @@ import (
 )
 
 type SQLiteInserter struct {
-	keys      []query.KeyValue
+	keys      query.KeyValues
 	tableName string
 	db        *sql.DB
 }
@@ -74,8 +74,9 @@ func (i *SQLiteInserter) Insert() error {
 	return nil
 }
 
-func NewSQLiteInserter(tableName string, db *sql.DB) query.Inserter {
+func NewSQLiteInserter(kv query.KeyValues, tableName string, db *sql.DB) query.Inserter {
 	return &SQLiteInserter{
+		keys:      kv,
 		tableName: tableName,
 		db:        db,
 	}

@@ -72,7 +72,7 @@ func TestNewSQLInserter(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			inserter, err := newSQLInserter(tt.dbtype, tt.tablename, db)
+			inserter, err := newSQLInserter(tt.dbtype, nil, tt.tablename, db)
 			if tt.wantErr {
 				assert.Error(t, err)
 				assert.Nil(t, inserter)
