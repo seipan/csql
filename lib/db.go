@@ -45,17 +45,46 @@ func InsertExec(config Config) error {
 		return err
 	}
 
-	kv := csv.GetKeyValues()
-
-	insert, err := newSQLInserter(config.Type, kv[0], csv.GetTableName(), db)
+	kvs, err := csv.GetKeyValues()
 	if err != nil {
 		return err
 	}
-	err = insert.Insert()
-	if err != nil {
-		return err
+
+	for _, kv := range kvs {
+		insert, err := newSQLInserter(config.Type, kv, csv.GetTableName(), db)
+		if err != nil {
+			return err
+		}
+		err = insert.Insert()
+		if err != nil {
+			return err
+		}
 	}
 	return nil
+}
+
+func QueryExec(config Config) (string, error) {
+	db, err := newSQLDB(config)
+	if err != nil {
+		return "", err
+	}
+	defer db.Close()
+
+	csv, err := NewCsvFile(config.Filepath)
+	if err != nil {
+		return "", err
+	}
+
+	kvs, err := csv.GetKeyValues()
+	if err != nil {
+		return "", err
+	}
+	insert, err := newSQLInserter(config.Type, kvs[0], csv.GetTableName(), db)
+	if err != nil {
+		return "", err
+	}
+	str := insert.Query()
+	return str, nil
 }
 
 func newSQLInserter(dbtype string, kv query.KeyValues, tablename string, db *sql.DB) (query.Inserter, error) {

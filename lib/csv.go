@@ -36,6 +36,10 @@ type CsvFile struct {
 	tableSchema map[string]string
 }
 
+func CsvFormatExec(cfg Config) error {
+	return nil
+}
+
 func (c *CsvFile) ReadCsvFile() ([][]string, error) {
 	file, err := os.Open(c.path)
 	if err != nil {
@@ -74,8 +78,30 @@ func (c *CsvFile) GetTableSchemaMap() map[string]string {
 	return c.tableSchema
 }
 
-func (c *CsvFile) GetKeyValues() []query.KeyValues {
-	return nil
+func (c *CsvFile) GetKeyValues() ([]query.KeyValues, error) {
+	if c.content == nil {
+		return nil, fmt.Errorf("csv file content is nil")
+	}
+	var kvs []query.KeyValues
+	for i, v := range c.content {
+		if i == 0 {
+			continue
+		}
+		var kv query.KeyValues
+		for j, vv := range v {
+			if j == 0 {
+				continue
+			}
+			k := query.KeyValue{
+				Key:   c.content[0][j],
+				Value: vv,
+			}
+			kv = append(kv, k)
+		}
+		kvs = append(kvs, kv)
+	}
+
+	return kvs, nil
 }
 
 func (c *CsvFile) CheckCsvFormat() error {
