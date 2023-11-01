@@ -61,5 +61,9 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.Flags().BoolP("check", "c", false, "check csv format")
+	rootCmd.Flags().BoolP("query", "q", false, "output query")
+	rootCmd.Flags().StringP("path", "p", "", "FilePath for Parsing CSVFile")
+	rootCmd.Flags().StringP("dns", "d", "", "DNS for Connecting Database")
+	rootCmd.Flags().StringP("type", "t", "", "Database Type")
 }
