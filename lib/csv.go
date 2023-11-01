@@ -37,6 +37,13 @@ type CsvFile struct {
 }
 
 func CsvFormatExec(cfg Config) error {
+	csv, err := NewCsvFile(cfg.Filepath)
+	if err != nil {
+		return err
+	}
+	if err := csv.CheckCsvFormat(); err != nil {
+		return err
+	}
 	return nil
 }
 
