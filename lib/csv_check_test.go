@@ -69,3 +69,34 @@ func TestCheckCsvFormatFailed(t *testing.T) {
 		})
 	}
 }
+
+func TestCsvFormatExec(t *testing.T) {
+	tests := []struct {
+		name    string
+		path    string
+		wantErr error
+	}{
+		{
+			name: "test01(success)",
+			path: "../testdata/csv/test01.csv",
+		},
+		{
+			name:    "test02(table empty)",
+			path:    "../testdata/csv/test02.csv",
+			wantErr: fmt.Errorf("table name is empty"),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cfg := Config{
+				Filepath: tt.path,
+			}
+			err := CsvFormatExec(cfg)
+			if tt.wantErr == nil {
+				assert.NoError(t, err)
+			} else if !strings.Contains(err.Error(), tt.wantErr.Error()) {
+				t.Errorf("CheckCsvFormat() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}

@@ -41,10 +41,16 @@ func CsvFormatExec(cfg Config) error {
 	if err != nil {
 		return err
 	}
+	csv.Init()
 	if err := csv.CheckCsvFormat(); err != nil {
 		return err
 	}
 	return nil
+}
+
+func (c *CsvFile) Init() {
+	c.SetContent()
+	c.GetTableSchema()
 }
 
 func (c *CsvFile) ReadCsvFile() ([][]string, error) {
