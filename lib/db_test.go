@@ -30,6 +30,31 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestQueryExec(t *testing.T) {
+	tests := []struct {
+		name    string
+		config  Config
+		wantStr string
+	}{
+		{
+			name: "mysql query",
+			config: Config{
+				Type:     "mysql",
+				DSN:      "",
+				Filepath: "../testdata/csv/test01.csv",
+			},
+			wantStr: "INSERT INTO user (name, id, email) VALUES (?, ?, ?)",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			str, err := QueryExec(tt.config)
+			assert.NoError(t, err)
+			assert.Equal(t, tt.wantStr, str)
+		})
+	}
+}
+
 func TestNewSQLInserter(t *testing.T) {
 	db := &sql.DB{}
 	tests := []struct {
