@@ -47,7 +47,7 @@ func TestParseYML(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.filepath, func(t *testing.T) {
-			result, err := parseYML(tt.filepath)
+			result, err := ParseYML(tt.filepath)
 			assert.Equal(t, tt.expected, result)
 			assert.NoError(t, err)
 		})

@@ -28,7 +28,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-func parseYML(filepath string) (*Config, error) {
+func ParseYML(filepath string) (*Config, error) {
 	var config Config
 	data, err := os.ReadFile(filepath)
 	if err != nil {
