@@ -39,6 +39,12 @@ Flags:
   -t, --type string   Database Type
 ```
 
+### ```--check``` option
+### ```--dns``` option
+### ```--path``` option
+### ```--query``` option
+### ```--type``` option
+
 
  ## License
 Code licensed under 
