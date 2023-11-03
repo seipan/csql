@@ -38,3 +38,12 @@ Flags:
   -q, --query         output query
   -t, --type string   Database Type
 ```
+
+
+ ## License
+Code licensed under 
+[the MIT License](https://github.com/seipan/csql/blob/main/LICENSE).
+
+
+## Author
+[seipan](https://github.com/seipan).
