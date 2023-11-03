@@ -40,6 +40,35 @@ Flags:
 ```
 
 ### ```--check``` option
+if success patern
+```
+csql --check --path=./testdata/csv/test01.csv --type=mysql --dsn=hogehoge
+
+             ___________ ____    __ 
+            / ____/ ___// __ \  / / 
+           / /    \__ \/ / / / / /  
+          / /___ ___/ / /_/ / / /___
+          \____//____/\___\_\/_____/
+                                                                          
+                                                                   
+
+csv format is correct
+```
+failed pattern
+```
+csql --check --path=./testdata/csv/test02.csv --type=mysql --dsn=hogehoge
+
+             ___________ ____    __ 
+            / ____/ ___// __ \  / / 
+           / /    \__ \/ / / / / /  
+          / /___ ___/ / /_/ / / /___
+          \____//____/\___\_\/_____/
+                                                                          
+                                                                   
+
+csv format is incorrect : table name is empty
+exit status 1
+```
 ### ```--dns``` option
 ### ```--path``` option
 ### ```--query``` option
