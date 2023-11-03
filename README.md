@@ -32,13 +32,18 @@ Usage:
 
 Flags:
   -c, --check         check csv format
-  -d, --dns string    DNS for Connecting Database
+  -d, --dsn string    DSN for Connecting Database
   -h, --help          help for csql
   -p, --path string   FilePath for Parsing CSVFile
   -q, --query         output query
   -t, --type string   Database Type
 ```
-
+### ```--dsn``` 
+dsn represents the Data Source Name of the database into which you want to insert CSV data.
+### ```--path``` option
+path represents the file path of the CSV you want to analyze this time.
+### ```--type``` option
+type represents the type of the database. Currently, it supports mariaDB, mysql, postgres, and sqlite3.
 ### ```--check``` option
 if success patern
 ```
@@ -69,10 +74,8 @@ csql --check --path=./testdata/csv/test02.csv --type=mysql --dsn=hogehoge
 csv format is incorrect : table name is empty
 exit status 1
 ```
-### ```--dns``` option
-### ```--path``` option
+
 ### ```--query``` option
-### ```--type``` option
 
 
  ## License
