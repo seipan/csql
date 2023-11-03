@@ -42,7 +42,7 @@ func TestPostgresSQLInserter_Query(t *testing.T) {
 				{Key: "name", Value: "John"},
 			},
 			tableName: "users",
-			expected:  "INSERT INTO users (name) VALUES ($1)",
+			expected:  "INSERT INTO users (name) VALUES ($1);",
 		},
 		{
 			name: "multiple key-value pairs",
@@ -51,7 +51,7 @@ func TestPostgresSQLInserter_Query(t *testing.T) {
 				{Key: "age", Value: "30"},
 			},
 			tableName: "users",
-			expected:  "INSERT INTO users (name, age) VALUES ($1, $2)",
+			expected:  "INSERT INTO users (name, age) VALUES ($1, $2);",
 		},
 	}
 

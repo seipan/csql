@@ -42,7 +42,7 @@ func TestSQLiteInserter_Query(t *testing.T) {
 				{Key: "name", Value: "John"},
 			},
 			tableName: "users",
-			expected:  "INSERT INTO users (name) VALUES (?)",
+			expected:  "INSERT INTO users (name) VALUES (?);",
 		},
 		{
 			name: "multiple key-value pairs",
@@ -51,7 +51,7 @@ func TestSQLiteInserter_Query(t *testing.T) {
 				{Key: "age", Value: "30"},
 			},
 			tableName: "users",
-			expected:  "INSERT INTO users (name, age) VALUES (?, ?)",
+			expected:  "INSERT INTO users (name, age) VALUES (?, ?);",
 		},
 	}
 

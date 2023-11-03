@@ -24,6 +24,7 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
 
@@ -43,12 +44,23 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
+	PreRun: func(cmd *cobra.Command, args []string) {
+		fmt.Println(`
+	     ___________ ____    __ 
+	    / ____/ ___// __ \  / / 
+	   / /    \__ \/ / / / / /  
+	  / /___ ___/ / /_/ / / /___
+	  \____//____/\___\_\/_____/
+									  
+								   
+	`)
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		path, err := cmd.Flags().GetString("path")
 		if err != nil {
 			log.Println(err)
 		}
-		dns, err := cmd.Flags().GetString("dns")
+		dsn, err := cmd.Flags().GetString("dsn")
 		if err != nil {
 			log.Println(err)
 		}
@@ -64,12 +76,8 @@ to quickly create a Cobra application.`,
 		if err != nil {
 			log.Println(err)
 		}
-		cfg, err := lib.ParseYML(".csql.yaml")
-		if err != nil {
-			cfg.DSN = dns
-			cfg.Filepath = path
-			cfg.Type = types
-		}
+		cfg, _ := lib.ParseYML(".csql.yaml")
+		cfg = replaceConfig(cfg, dsn, types, path)
 		err = checkConfig(*cfg)
 		if err != nil {
 			log.Println(err)
@@ -77,20 +85,25 @@ to quickly create a Cobra application.`,
 		}
 		if check {
 			err = lib.CsvFormatExec(*cfg)
-			log.Println(err)
-		}
-		if query {
+			if err == nil {
+				fmt.Println("csv format is correct")
+			} else {
+				fmt.Println("csv format is incorrect :", err)
+				os.Exit(1)
+			}
+		} else if query {
 			str, err := lib.QueryExec(*cfg)
 			if err != nil {
 				log.Println(err)
 				os.Exit(1)
 			}
-			log.Println(str)
-		}
-		err = lib.InsertExec(*cfg)
-		if err != nil {
-			log.Println(err)
-			os.Exit(1)
+			fmt.Println(str)
+		} else {
+			err = lib.InsertExec(*cfg)
+			if err != nil {
+				log.Println(err)
+				os.Exit(1)
+			}
 		}
 	},
 }
@@ -116,7 +129,7 @@ func init() {
 	rootCmd.Flags().BoolP("check", "c", false, "check csv format")
 	rootCmd.Flags().BoolP("query", "q", false, "output query")
 	rootCmd.Flags().StringP("path", "p", "", "FilePath for Parsing CSVFile")
-	rootCmd.Flags().StringP("dns", "d", "", "DNS for Connecting Database")
+	rootCmd.Flags().StringP("dsn", "d", "", "DSN for Connecting Database")
 	rootCmd.Flags().StringP("type", "t", "", "Database Type")
 }
 
@@ -131,4 +144,21 @@ func checkConfig(cfg lib.Config) error {
 		return errors.New("filepath is empty")
 	}
 	return nil
+}
+
+func replaceConfig(cfg *lib.Config, dns string, types string, path string) *lib.Config {
+	if cfg == nil {
+		cfg = &lib.Config{}
+	}
+	cfg.DSN = replaceString(cfg.DSN, dns)
+	cfg.Type = replaceString(cfg.Type, types)
+	cfg.Filepath = replaceString(cfg.Filepath, path)
+	return cfg
+}
+
+func replaceString(str string, target string) string {
+	if str == "" {
+		return target
+	}
+	return str
 }

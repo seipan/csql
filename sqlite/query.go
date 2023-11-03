@@ -46,7 +46,7 @@ func (i *SQLiteInserter) Query() string {
 	}
 
 	query := fmt.Sprintf(
-		"INSERT INTO %s (%s) VALUES (%s)",
+		"INSERT INTO %s (%s) VALUES (%s);",
 		i.tableName,
 		strings.Join(keys, ", "),
 		strings.Join(placeholders, ", "),

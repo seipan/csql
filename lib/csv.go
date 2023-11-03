@@ -53,6 +53,10 @@ func (c *CsvFile) Init() {
 	c.GetTableSchema()
 }
 
+func (c *CsvFile) GetSize() int {
+	return len(c.content) - 1
+}
+
 func (c *CsvFile) ReadCsvFile() ([][]string, error) {
 	file, err := os.Open(c.path)
 	if err != nil {
