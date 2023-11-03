@@ -38,6 +38,13 @@ Flags:
   -q, --query         output query
   -t, --type string   Database Type
 ```
+Type, DSN, and path can be specified not only from command-line arguments but also from the .csql.yaml file. Below is an example.
+```
+type: mysql
+dsn: hogehoge
+filepath: ./test.csv
+
+```
 ### ```--dsn``` 
 dsn represents the Data Source Name of the database into which you want to insert CSV data.
 ### ```--path``` option
