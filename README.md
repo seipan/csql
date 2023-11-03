@@ -23,3 +23,18 @@
 ```
 go install github.com/seipan/csql@latest
 ```
+
+## Usage
+command option
+```
+Usage:
+  csql [flags]
+
+Flags:
+  -c, --check         check csv format
+  -d, --dns string    DNS for Connecting Database
+  -h, --help          help for csql
+  -p, --path string   FilePath for Parsing CSVFile
+  -q, --query         output query
+  -t, --type string   Database Type
+```
