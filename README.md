@@ -83,7 +83,20 @@ exit status 1
 ```
 
 ### ```--query``` option
+```
+ csql --query --path=./testdata/csv/test01.csv --type=mysql --dsn="hoge:hoge@tcp(hoge:3306)/hoge?charset=utf8&parseTime=true"
 
+
+             ___________ ____    __ 
+            / ____/ ___// __ \  / / 
+           / /    \__ \/ / / / / /  
+          / /___ ___/ / /_/ / / /___
+          \____//____/\___\_\/_____/
+                                                                          
+                                                                   
+
+INSERT INTO user (name, id, email) VALUES (?, ?, ?)
+```
 
  ## License
 Code licensed under 
