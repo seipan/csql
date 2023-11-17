@@ -50,7 +50,12 @@ func InsertExec(config Config) error {
 		return err
 	}
 
-	for _, kv := range kvs {
+	totals := csv.GetSize()
+	fmt.Printf("insert %d rows\n", totals)
+
+	for i, kv := range kvs {
+		p := (i + 1) * 100 / totals
+		fmt.Printf("\rInserting: %s %2d%%", mark(p), p)
 		insert, err := newSQLInserter(config.Type, kv, csv.GetTableName(), db)
 		if err != nil {
 			return err
@@ -115,4 +120,10 @@ func newSQLDB(config Config) (*sql.DB, error) {
 	default:
 		return nil, fmt.Errorf("invalid dbtype: %s", config.Type)
 	}
+}
+
+var marks = []string{"|", "/", "-", "\\"}
+
+func mark(i int) string {
+	return marks[i%4]
 }
