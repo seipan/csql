@@ -97,7 +97,22 @@ exit status 1
 
 INSERT INTO user (name, id, email) VALUES (?, ?, ?)
 ```
+### ```insert``` option
+```
+csql --path=./testdata/csv/test01.csv --type=mysql --dsn="hoge:hoge@tcp(localhost:3308)/hoge?parseTime=true&collation=utf8mb4_bin"
 
+
+             ___________ ____    __ 
+            / ____/ ___// __ \  / / 
+           / /    \__ \/ / / / / /  
+          / /___ ___/ / /_/ / / /___
+          \____//____/\___\_\/_____/
+                                                                          
+                                                                   
+
+insert 2 rows
+Inserting: | 100%% 
+```
  ## License
 Code licensed under 
 [the MIT License](https://github.com/seipan/csql/blob/main/LICENSE).

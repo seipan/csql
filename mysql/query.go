@@ -46,7 +46,7 @@ func (i *MySQLInserter) Query() string {
 	}
 
 	query := fmt.Sprintf(
-		"INSERT INTO %s (%s) VALUES (%s);",
+		"INSERT INTO %s(%s) VALUES (%s);",
 		i.tableName,
 		strings.Join(keys, ", "),
 		strings.Join(placeholders, ", "),
@@ -55,6 +55,9 @@ func (i *MySQLInserter) Query() string {
 }
 
 func (i *MySQLInserter) Insert() error {
+	if i.db.Ping() != nil {
+		return fmt.Errorf("failed to connect to database: %w", i.db.Ping())
+	}
 	stmt, err := i.db.Prepare(i.Query())
 	if err != nil {
 		return fmt.Errorf("failed to prepare statement: %w", err)
