@@ -1,0 +1,51 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: E2ETest
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:    
+  build:
+    strategy:
+      matrix:
+        go-version: ['1.21', '1.22']
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: testdb
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: set up Go 1.x
+      uses: actions/setup-go@v4
+      with:
+        go-version: ${{ matrix.go-version }}
+
+    - name: Wait for MySQL
+      run: |
+        while ! mysqladmin ping -h"127.0.0.1" --silent; do
+            sleep 1
+        done
+
+    - name: Run a MySQL command
+      run: |
+        mysql -h 127.0.0.1 -u root -ppassword -e 'SHOW DATABASES;'
+    
+    - name: Create a table
+      run: |
+        mysql -h 127.0.0.1 -u root -ppassword testdb -e "CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100));"
+
+    - name: Test csql
+      run: |
+        go run . --path=./testdata/csv/test01.csv --type=mysql --dsn="root:password@tcp(127.0.0.1:3306)/testdb?parseTime=true&collation=utf8mb4_bin"
