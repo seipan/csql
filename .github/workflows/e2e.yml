@@ -32,9 +32,6 @@ jobs:
       with:
         go-version: ${{ matrix.go-version }}
 
-    - name: Install csql
-      run: go install github.com/seipan/csql@latest
-
     - name: Wait for MySQL
       run: |
         while ! mysqladmin ping -h"127.0.0.1" --silent; do
@@ -51,4 +48,4 @@ jobs:
 
     - name: Test csql
       run: |
-        csql --path=./testdata/csv/test01.csv --type=mysql --dsn="root:password@tcp(127.0.0.1:3306)/testdb?parseTime=true&collation=utf8mb4_bin"
+        go run . --path=./testdata/csv/test01.csv --type=mysql --dsn="root:password@tcp(127.0.0.1:3306)/testdb?parseTime=true&collation=utf8mb4_bin"
