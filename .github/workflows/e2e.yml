@@ -44,6 +44,10 @@ jobs:
     - name: Run a MySQL command
       run: |
         mysql -h 127.0.0.1 -u root -ppassword -e 'SHOW DATABASES;'
+    
+    - name: Create a table
+      run: |
+        mysql -h 127.0.0.1 -u root -ppassword testdb -e "CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100));"
 
     - name: Test csql
       run: |
