@@ -25,7 +25,7 @@ package lib
 import (
 	"os"
 
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 func ParseYML(filepath string) (*Config, error) {
