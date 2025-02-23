@@ -1,9 +1,11 @@
 module github.com/seipan/csql
 
-go 1.20
+go 1.21
+
+toolchain go1.24.0
 
 require (
-	github.com/go-sql-driver/mysql v1.8.1
+	github.com/go-sql-driver/mysql v1.9.0
 	github.com/lib/pq v1.10.9
 	github.com/mattn/go-sqlite3 v1.14.24
 	github.com/spf13/cobra v1.9.1
